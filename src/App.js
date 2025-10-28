@@ -99,7 +99,7 @@ const EchoHalalTestCases = () => {
     signDocument: [
       {
         id: 'TC-EH-04',
-        scenario: 'Sign the Halal Certificate with a valid file',
+        scenario: 'Sign the Halal Certificate with a valid file | PDF',
         endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
         method: 'POST',
         priority: 'Critical',
@@ -129,7 +129,7 @@ const EchoHalalTestCases = () => {
       },
       {
         id: 'TC-EH-05',
-        scenario: 'Sign the Health Certificate with a valid file',
+        scenario: 'Sign the Health Certificate with a valid file | PDF',
         endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
         method: 'POST',
         priority: 'Critical',
@@ -159,7 +159,7 @@ const EchoHalalTestCases = () => {
       },
       {
         id: 'TC-EH-06',
-        scenario: 'Sign the Origin Certificate with a valid file',
+        scenario: 'Sign the Origin Certificate with a valid file | PDF',
         endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
         method: 'POST',
         priority: 'Critical',
@@ -189,7 +189,7 @@ const EchoHalalTestCases = () => {
       },
       {
         id: 'TC-EH-07',
-        scenario: 'Sign the Invoice Certificate with a valid file',
+        scenario: 'Sign the Invoice Certificate with a valid file | PDF',
         endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
         method: 'POST',
         priority: 'Critical',
@@ -219,7 +219,7 @@ const EchoHalalTestCases = () => {
       },
       {
         id: 'TC-EH-08',
-        scenario: 'Sign the Additional Document with a valid file',
+        scenario: 'Sign the Additional Document with a valid file | PDF',
         endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
         method: 'POST',
         priority: 'Critical',
@@ -690,68 +690,884 @@ const EchoHalalTestCases = () => {
     ],
     uploadDocument: [
       {
-        id: 'TC-EH-14',
-        scenario: 'Upload Halal certificate with a valid signature and file',
-        endpoint: 'BaseUrl/be-smart-cert/aum-smart-cert/1.0/public/v1/external/halal/upload',
+        id: 'TC-EH-24',
+        scenario: 'Upload Halal Certificate with a valid signature and file format | PDF',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
         method: 'POST',
         priority: 'Critical',
         type: 'Functional',
         automationStatus: 'Automated',
         preConditions: 'User is authorized\nValid signed PDF file is available',
         testSteps: [
-          'Obtain the authorization token',
-          'Prepare signed Halal certificate PDF',
-          'Send a POST request with the signed file',
-          'Include the proper content-type header',
-          'Verify upload success',
-          'Verify file reference ID is returned'
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
         ],
         testData: {
-          file: 'signed_halal.pdf',
-          fileSize: '4.5 MB',
-          fileFormat: 'PDF',
-          signature: 'Digital Signature Applied',
-          authToken: 'Bearer {token}',
-          contentType: 'multipart/form-data',
-          environment: 'QA'
+          body: {
+            file: 'signed_halal.pdf (upload PDF Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Halal Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
         },
-        expectedResult: 'Status Code: 200 or 201\nFile uploaded successfully\nFile ID or reference returned\nFile can be retrieved using the reference ID',
+        expectedResult: `Status Code: 200
+        Response Body:
+        {
+            "id": 19796,
+            "referenceId": "0c9dbfa5-499f-471d-8214-db61",
+            "fileName": "Halal-Cert.pdf",
+            "fileSize": 276764,
+            "fileType": "Halal Certificate",
+            "mime": "application/pdf",
+            "eventType": "ISSUING_CERTIFICATE",
+            "eventId": "b5cf08bf-2983-4648-85f7"
+        }
+
+        Validations:
+        - File uploaded successfully
+        - File ID or reference returned
+        - File can be retrieved using the reference ID
+        - File size matches uploaded file
+        - File type is correctly set`,
         postConditions: 'File is stored in the system and accessible',
         estimatedTime: '10 mins',
         tags: ['Smoke', 'Regression', 'API', 'Upload']
       },
+
       {
-        id: 'TC-EH-15',
-        scenario: 'Upload Health certificate with a valid signature and file',
-        endpoint: 'BaseUrl/be-smart-cert/aum-smart-cert/1.0/public/v1/external/health/upload',
+        id: 'TC-EH-25',
+        scenario: 'Upload Health Certificate with a valid signature and file format | PDF.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
         method: 'POST',
         priority: 'Critical',
         type: 'Functional',
         automationStatus: 'Automated',
         preConditions: 'User is authorized\nValid signed PDF file is available',
         testSteps: [
-          'Obtain the authorization token',
-          'Prepare signed Health certificate PDF',
-          'Send a POST request with the signed file',
-          'Include the proper content-type header',
-          'Verify upload success',
-          'Verify file reference ID is returned'
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
         ],
         testData: {
-          file: 'signed_health.pdf',
-          fileSize: '5.2 MB',
-          fileFormat: 'PDF',
-          signature: 'Digital Signature Applied',
-          authToken: 'Bearer {token}',
-          contentType: 'multipart/form-data',
-          environment: 'QA'
+          body: {
+            file: 'signed_health.pdf (upload PDF Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Health Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
         },
-        expectedResult: 'Status Code: 200 or 201\nFile uploaded successfully\nFile ID or reference returned',
+        expectedResult: `Status Code: 200
+        Response Body:
+        {
+            "id": 19796,
+            "referenceId": "0c9dbfa5-499f-471d-8214-db61",
+            "fileName": "Health-Cert.pdf",
+            "fileSize": 276764,
+            "fileType": "Health Certificate",
+            "mime": "application/pdf",
+            "eventType": "ISSUING_CERTIFICATE",
+            "eventId": "b5cf08bf-2983-4648-85f7"
+        }
+
+        Validations:
+        - File uploaded successfully
+        - File ID or reference returned
+        - File can be retrieved using the reference ID
+        - File size matches uploaded file
+        - File type is correctly set`,
         postConditions: 'File is stored in the system and accessible',
         estimatedTime: '10 mins',
         tags: ['Smoke', 'Regression', 'API', 'Upload']
-      }
+      },
+
+      {
+        id: 'TC-EH-26',
+        scenario: 'Upload Origin Certificate with a valid signature and file format | PDF.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Functional',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nValid signed PDF file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_origin.pdf (upload PDF Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Origin Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: `Status Code: 200
+        Response Body:
+        {
+            "id": 19796,
+            "referenceId": "0c9dbfa5-499f-471d-8214-db61",
+            "fileName": "Health-Cert.pdf",
+            "fileSize": 276764,
+            "fileType": "COMMON_FILE",
+            "mime": "application/pdf",
+            "eventType": "ISSUING_CERTIFICATE",
+            "eventId": "b5cf08bf-2983-4648-85f7"
+        }
+
+        Validations:
+        - File uploaded successfully
+        - File ID or reference returned
+        - File can be retrieved using the reference ID
+        - File size matches uploaded file
+        - File type is correctly set`,
+        postConditions: 'File is stored in the system and accessible',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-27',
+        scenario: 'Upload Invoice Certificate with a valid signature and file format | PDF.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Functional',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nValid signed PDF file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_invoice.pdf (upload PDF Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Invoice Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: `Status Code: 200
+        Response Body:
+        {
+            "id": 19796,
+            "referenceId": "0c9dbfa5-499f-471d-8214-db61",
+            "fileName": "Invoice-Cert.pdf",
+            "fileSize": 276764,
+            "fileType": "COMMON_FILE",
+            "mime": "application/pdf",
+            "eventType": "ISSUING_CERTIFICATE",
+            "eventId": "b5cf08bf-2983-4648-85f7"
+        }
+
+        Validations:
+        - File uploaded successfully
+        - File ID or reference returned
+        - File can be retrieved using the reference ID
+        - File size matches uploaded file
+        - File type is correctly set`,
+        postConditions: 'File is stored in the system and accessible',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-28',
+        scenario: 'Upload Additional Document with a valid signature and file format | PDF.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Functional',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nValid signed PDF file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'addition_doc.pdf (upload PDF Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Additional Document'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: `Status Code: 200
+        Response Body:
+        {
+            "id": 19796,
+            "referenceId": "0c9dbfa5-499f-471d-8214-db61",
+            "fileName": "billing-doc-ecert.pdf",
+            "fileSize": 276764,
+            "fileType": "Bill of Loading",
+            "mime": "application/pdf",
+            "eventType": "ISSUING_CERTIFICATE",
+            "eventId": "b5cf08bf-2983-4648-85f7"
+        }
+
+        Validations:
+        - File uploaded successfully
+        - File ID or reference returned
+        - File can be retrieved using the reference ID
+        - File size matches uploaded file
+        - File type is correctly set`,
+        postConditions: 'File is stored in the system and accessible',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-29',
+        scenario: 'Upload Halal Certificate with a valid signature and invalid file format | PNG.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid PNG file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_halal.png (upload PNG Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Halal Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-30',
+        scenario: 'Upload Halal Certificate with a valid signature and invalid file format | DOC.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid Doc file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_halal.doc (upload DOC Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Halal Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+      {
+        id: 'TC-EH-31',
+        scenario: 'Upload Halal Certificate with a valid signature and invalid file format | XLS.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid XLS file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_halal.xls (upload XLS Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Halal Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-32',
+        scenario: 'Upload Health Certificate with a valid signature and invalid file format | PNG.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid PNG file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_health.png (upload PNG Cert file)',
+            signature: 'signature value got from the signed document api',
+            fileType: 'Health Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-33',
+        scenario: 'Upload Health Certificate with a valid signature and invalid file format | DOC.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid Doc file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Health Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_health.doc (upload DOC Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Health Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+      {
+        id: 'TC-EH-34',
+        scenario: 'Upload Health Certificate with a valid signature and invalid file format | XLS.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid XLS file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Health Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_health.xls (upload XLS Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Health Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-35',
+        scenario: 'Upload Origin Certificate with a valid signature and invalid file format | PNG.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid PNG file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_origin.png (upload PNG Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Origin Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-36',
+        scenario: 'Upload Origin Certificate with a valid signature and invalid file format | DOC.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid Doc file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Origin Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_origin.doc (upload DOC Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Origin Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+      {
+        id: 'TC-EH-37',
+        scenario: 'Upload Origin Certificate with a valid signature and invalid file format | XLS.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid XLS file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Origin Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_origin.xls (upload XLS Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Origin Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-38',
+        scenario: 'Upload Invoice Certificate with a valid signature and invalid file format | PNG.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid PNG file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Invoice Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_invoice.png (upload PNG Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Invoice Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-39',
+        scenario: 'Upload Invoice Certificate with a valid signature and invalid file format | DOC.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid Doc file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Invoice Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_invoice.doc (upload DOC Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Invoice Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+      {
+        id: 'TC-EH-40',
+        scenario: 'Upload Invoice Certificate with a valid signature and invalid file format | XLS.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid XLS file is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Invoice Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_invoice.xls (upload XLS Cert file)',
+            signature: 'Signature value got from the signed document api',
+            fileType: 'Invoice Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+       {
+        id: 'TC-EH-41',
+        scenario: 'Upload Halal Certificate with a invalid signature and valid file format | PDF.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInValid File Signature is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_halal.pdf (upload PDF Cert file)',
+            signature: 'Invalid signature value',
+            fileType: 'Halal Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Failed to verify signature.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-42',
+        scenario: 'Upload Health Certificate with a invalid signature and valid file format | PDF.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInValid File Signature is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_health.pdf (upload PDF Cert file)',
+            signature: 'Invalid signature value',
+            fileType: 'Health Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Failed to verify signature.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-43',
+        scenario: 'Upload Origin Certificate with a invalid signature and valid file format | PDF.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInValid File Signature is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_origin.pdf (upload PDF Cert file)',
+            signature: 'Invalid signature value',
+            fileType: 'Origin Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Failed to verify signature.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-44',
+        scenario: 'Upload Invoice Certificate with a invalid signature and valid file format | PDF.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInValid File Signature is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'signed_invoice.pdf (upload PDF Cert file)',
+            signature: 'Invalid signature value',
+            fileType: 'Invoice Certificate'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Failed to verify signature.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
+
+      {
+        id: 'TC-EH-45',
+        scenario: 'Upload additional document with a invalid signature and valid file format | PDF.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/upload-with-sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInValid File Signature is available',
+        testSteps: [
+          'Obtain an authorization token.',
+          'Send a POST request with a signed Halal Cert PDF.' ,
+          'Include proper content-type header.' ,
+          'Verify upload success.',
+          'Define signature and filetype values in the request body.',
+          'Define eventId, eventType, and issueEntity values in parameters.'
+
+        ],
+        testData: {
+          body: {
+            file: 'additional_document.pdf (upload PDF Cert file)',
+            signature: 'Invalid signature value',
+            fileType: 'Additional Document'
+          },
+          params: {
+            eventId: 'EVT-12345',
+            eventType: 'CERTIFICATE_FILE_TYPE',
+            issuingEntity: 'FAMBRAS HALAL Certification Limited'
+          }
+        },
+        expectedResult: 'Status Code: 400\nError message: Failed to verify signature.',
+        postConditions: 'File is not uploaded',
+        estimatedTime: '10 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Upload']
+      },
     ],
+
     createCertificates: [
       {
         id: 'TC-EH-16',
