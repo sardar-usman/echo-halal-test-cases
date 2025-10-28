@@ -27,7 +27,7 @@ const EchoHalalTestCases = () => {
         preConditions: 'Valid ID and Secret Key available.',
         testSteps: [
           'Send a POST request to the authorization endpoint',
-          'Include a valid username and password in the request body',
+          'Include a valid Id and Secret Key in the request body',
           'Verify response status code',
           'Verify the authorization token is returned',
           'Validate token format and expiry'
@@ -54,7 +54,7 @@ const EchoHalalTestCases = () => {
         preConditions: 'Invalid user credentials.',
         testSteps: [
           'Send a POST request to the /authorization endpoint',
-          'Include invalid credentials in the request body',
+          'Include invalid Id and Secret Key in the request body',
           'Verify response status code',
           'Verify the appropriate error message'
         ],
@@ -95,16 +95,17 @@ const EchoHalalTestCases = () => {
         tags: ['Regression', 'API']
       }
     ],
+
     signDocument: [
       {
         id: 'TC-EH-04',
         scenario: 'Sign the Halal Certificate with a valid file',
-        endpoint: 'BaseUrl/be-smart-cert/aum-smart-cert/1.0/public/v1/external/halal/sign',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
         method: 'POST',
         priority: 'Critical',
         type: 'Functional',
         automationStatus: 'Automated',
-        preConditions: 'User is authorized\nValid Halal certificate file is available',
+        preConditions: 'User is authorized\nValid Halal certificate file is available\nSet the proper access token in the authorization.',
         testSteps: [
           'Obtain the authorization token',
           'Prepare valid Halal certificate PDF file',
@@ -129,7 +130,7 @@ const EchoHalalTestCases = () => {
       {
         id: 'TC-EH-05',
         scenario: 'Sign the Health Certificate with a valid file',
-        endpoint: 'BaseUrl/be-smart-cert/aum-smart-cert/1.0/public/v1/external/health/sign',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
         method: 'POST',
         priority: 'Critical',
         type: 'Functional',
@@ -157,9 +158,99 @@ const EchoHalalTestCases = () => {
         tags: ['Smoke', 'Regression', 'API', 'Health']
       },
       {
+        id: 'TC-EH-06',
+        scenario: 'Sign the Origin Certificate with a valid file',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Functional',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nValid Origin certificate file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare valid Origin certificate PDF file',
+          'Send a POST request with the file',
+          'Include the authorization token in the header',
+          'Verify response status',
+          'Verify the signature is applied to the document'
+        ],
+        testData: {
+          file: 'origin_certificate.pdf',
+          fileSize: '3.1 MB',
+          fileFormat: 'PDF',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 200\nDocument signed successfully\nSigned document returned or reference ID provided',
+        postConditions: 'Document is digitally signed and stored',
+        estimatedTime: '8 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Origin']
+      },
+      {
+        id: 'TC-EH-07',
+        scenario: 'Sign the Invoice Certificate with a valid file',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Functional',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nValid Invoice certificate file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare valid Invoice certificate PDF file',
+          'Send a POST request with the file',
+          'Include the authorization token in the header',
+          'Verify response status',
+          'Verify the signature is applied to the document'
+        ],
+        testData: {
+          file: 'invoice_certificate.pdf',
+          fileSize: '3.1 MB',
+          fileFormat: 'PDF',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 200\nDocument signed successfully\nSigned document returned or reference ID provided',
+        postConditions: 'Document is digitally signed and stored',
+        estimatedTime: '8 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Invoice']
+      },
+      {
+        id: 'TC-EH-08',
+        scenario: 'Sign the Additional Document with a valid file',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Functional',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nValid Additional Document file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare valid Additional Document PDF file',
+          'Send a POST request with the file',
+          'Include the authorization token in the header',
+          'Verify response status',
+          'Verify the signature is applied to the document'
+        ],
+        testData: {
+          file: 'additional_document.pdf',
+          fileSize: '3.1 MB',
+          fileFormat: 'PDF',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 200\nDocument signed successfully\nSigned document returned or reference ID provided',
+        postConditions: 'Document is digitally signed and stored',
+        estimatedTime: '8 mins',
+        tags: ['Smoke', 'Regression', 'API', 'Additional Document']
+      },
+      {
         id: 'TC-EH-09',
-        scenario: 'Attempt to sign the Halal Certificate with an invalid file',
-        endpoint: 'BaseUrl/be-smart-cert/aum-smart-cert/1.0/public/v1/external/halal/sign',
+        scenario: 'Sign the Halal Certificate with an invalid file format | PNG.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
         method: 'POST',
         priority: 'High',
         type: 'Negative',
@@ -173,18 +264,429 @@ const EchoHalalTestCases = () => {
           'Verify error response'
         ],
         testData: {
-          file: 'corrupted_halal.pdf',
+          file: 'halal.png',
           fileSize: '1.2 MB',
-          fileFormat: 'PDF (corrupted)',
+          fileFormat: 'PNG (corrupted)',
           authToken: 'Bearer {token}',
           contentType: 'multipart/form-data',
           environment: 'QA'
         },
-        expectedResult: 'Status Code: 400\nError message: Invalid file format or File is corrupted',
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
         postConditions: 'Document is not signed',
         estimatedTime: '5 mins',
         tags: ['Regression', 'API', 'Negative']
-      }
+      },
+      {
+        id: 'TC-EH-10',
+        scenario: 'Sign the Halal Certificate with an invalid file format | DOC.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'halal.doc',
+          fileSize: '1.2 MB',
+          fileFormat: 'DOC (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      {
+        id: 'TC-EH-11',
+        scenario: 'Sign the Halal Certificate with an invalid file format | XLS.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'halal.xls',
+          fileSize: '1.2 MB',
+          fileFormat: 'XLS (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      {
+        id: 'TC-EH-12',
+        scenario: 'Sign the Health Certificate with an invalid file format | PNG.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'health.png',
+          fileSize: '1.2 MB',
+          fileFormat: 'PNG (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      {
+        id: 'TC-EH-13',
+        scenario: 'Sign the Health Certificate with an invalid file format | DOC.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'halal.doc',
+          fileSize: '1.2 MB',
+          fileFormat: 'DOC (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      {
+        id: 'TC-EH-14',
+        scenario: 'Sign the Health Certificate with an invalid file format | XLS.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'halal.xls',
+          fileSize: '1.2 MB',
+          fileFormat: 'XLS (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+
+      {
+        id: 'TC-EH-15',
+        scenario: 'Sign the Orign Certificate with an invalid file format | PNG.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'Orign.png',
+          fileSize: '1.2 MB',
+          fileFormat: 'PNG (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      {
+        id: 'TC-EH-16',
+        scenario: 'Sign the Orign Certificate with an invalid file format | DOC.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'Orign.doc',
+          fileSize: '1.2 MB',
+          fileFormat: 'DOC (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      {
+        id: 'TC-EH-17',
+        scenario: 'Sign the Orign Certificate with an invalid file format | XLS.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'Orign.xls',
+          fileSize: '1.2 MB',
+          fileFormat: 'XLS (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+
+      {
+        id: 'TC-EH-18',
+        scenario: 'Sign the Invoice Certificate with an invalid file format | PNG.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'Invoice.png',
+          fileSize: '1.2 MB',
+          fileFormat: 'PNG (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      {
+        id: 'TC-EH-19',
+        scenario: 'Sign the Invoice Certificate with an invalid file format | DOC.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'Invoice.doc',
+          fileSize: '1.2 MB',
+          fileFormat: 'DOC (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      {
+        id: 'TC-EH-20',
+        scenario: 'Sign the Invoice Certificate with an invalid file format | XLS.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'Invoice.xls',
+          fileSize: '1.2 MB',
+          fileFormat: 'XLS (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+
+
+      {
+        id: 'TC-EH-21',
+        scenario: 'Sign the Additional Document with an invalid file format | PNG.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'Additional-Document.png',
+          fileSize: '1.2 MB',
+          fileFormat: 'PNG (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      {
+        id: 'TC-EH-22',
+        scenario: 'Sign the Additional Document with an invalid file format | DOC.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'Additional Document.doc',
+          fileSize: '1.2 MB',
+          fileFormat: 'DOC (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      {
+        id: 'TC-EH-23',
+        scenario: 'Sign the Additional Document with an invalid file format | XLS.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/file/sign',
+        method: 'POST',
+        priority: 'High',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nInvalid/corrupted file is available',
+        testSteps: [
+          'Obtain the authorization token',
+          'Prepare invalid or corrupted file',
+          'Send a POST request with the invalid file',
+          'Include the authorization token in the header',
+          'Verify error response'
+        ],
+        testData: {
+          file: 'Additional-Document.xls',
+          fileSize: '1.2 MB',
+          fileFormat: 'XLS (corrupted)',
+          authToken: 'Bearer {token}',
+          contentType: 'multipart/form-data',
+          environment: 'QA'
+        },
+        expectedResult: 'Status Code: 400\nError message: Unsupported file type. Only PDF files are allowed.\nNo signature is applied',
+        postConditions: 'Document is not signed',
+        estimatedTime: '5 mins',
+        tags: ['Regression', 'API', 'Negative']
+      },
+      
     ],
     uploadDocument: [
       {
