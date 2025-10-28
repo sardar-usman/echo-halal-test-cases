@@ -1,0 +1,267 @@
+{
+    "additionalDocumentsUpload": [
+        {
+            "fileId": "{{addFileId}}"
+        }
+    ],
+    "certificates": [
+        {
+            "issuingEntity": "FAMBRAS HALAL Certification Limited",
+            "certificateNo": "{{halalCertificateNo}}",
+            "certificateDate": "{{certificateDate}}",
+            "certificateExpiryDate": "{{certificateExpiryDate}}",
+            "destinationPort": "Ajman",
+            "fileId": "{{halalCertFileId}}",
+            "products": [
+                {
+                    "productQuantity": 10,
+                    "productQuantityMeasure": "Boxes",
+                    "productWeight": 27810.00,
+                    "productGrossWeight": 0.1,
+                    "productWeightMeasure": "Kg",
+                    "productDesc": "Product 1",
+                    "productName": "Frozen chicken",
+                    "productionDate": [
+                        "{{productionDate1}}",
+                        "{{productionDate2}}"
+                    ],
+                    "expirationDate": [
+                        "{{productExpiryDate1}}",
+                        "{{productExpiryDate2}}"
+                    ],
+                    "slaughterHouses": [
+                        {
+                            "slaughterCode": "SIF 922",
+                            "slaughterHouse": "JBS AVES LTDA-PASSO FUNDO/RS",
+                            "slaughterDate": "{{slaughterDate}}"
+                        },
+                        {
+                            "slaughterCode": "SIF 3482",
+                            "slaughterHouse": "JBS AVES LTDA-CAARAPO/MS BRAZIL",
+                            "slaughterDate": "{{slaughterDate}}"
+                        }
+                    ]
+                }
+            ],
+            "contacts": [
+                {
+                    "name": "John Doe",
+                    "email": "johndoee@w.com",
+                    "address": "123 Address St",
+                    "contactNo": "1234567",
+                    "countryCode": "+92",
+                    "type": "Importer"
+                },
+                {
+                    "name": "Jane Doe",
+                    "email": "janedoe@e.com",
+                    "address": "456 Address St",
+                    "contactNo": "1234567",
+                    "countryCode": "+91",
+                    "type": "Exporter"
+                }
+            ],
+            "attributes": [],
+            "certificateType": "halal",
+            "loadingPort": "Navegantes",
+            "invoiceNumber": "IN3007",
+            "transportation": "CMA CGM RHONE",
+            "billingNumber": "3007EB22",
+            "billingDate": "2025-07-30",
+            "shipmentDetails": {
+                "producerName": "JBS AVES LTDA",
+                "vesselName": "MSC AJACCIO",
+                "containerNumber": "TRIU8945182",
+                "shippingDate": "{{shippingDate}}"
+            }
+        },
+        {
+            "issuingEntity": "Ministry of Agriculture",
+            "certificateNo": "{{healthCertificateNo}}",
+            "certificateDate": "{{certificateDate}}",
+            "certificateExpiryDate": "{{certificateExpiryDate}}",
+            "destinationPort": "Ajman",
+            "fileId": "{{healthCertFileId}}",
+            "products": [
+                {
+                    "productQuantity": 1.290,
+                    "productQuantityMeasure": "Boxes",
+                    "productWeight": "12900.00",
+                    "productWeightMeasure": "Kg",
+                    "productDesc": "Product 1",
+                    "productName": "Frozen chicken half breast boneless skinless",
+                    "brand": "ABC",
+                   "productionDate": [
+                        "{{productionDate1}}",
+                        "{{productionDate2}}"
+                    ],
+                    "expirationDate": [
+                        "{{productExpiryDate1}}",
+                        "{{productExpiryDate2}}"
+                    ],
+                    "slaughterHouses": [
+                        {
+                            "slaughterCode": "SIF 922",
+                            "slaughterHouse":"JBS AVES LTDA-PASSO FUNDO/RS",
+                            "slaughterDate": "{{slaughterDate}}"
+                        },
+                        {
+                            "slaughterCode": "SIF 3482",
+                            "slaughterHouse": "JBS AVES LTDA-CAARAPO/MS BRAZIL",
+                            "slaughterDate": "{{slaughterDate}}"
+                        }
+                    ]
+                }
+            ],
+            "contacts": [
+                {
+                    "name": "John Doe",
+                    "email": "johndoe@eeee.com",
+                    "address": "123 Address St",
+                    "contactNo": "1234567",
+                    "countryCode": "+971",
+                    "type": "Importer"
+                },
+                {
+                    "name": "Jane Doe",
+                    "email": "janedoe@eee.com",
+                    "address": "456 Address St",
+                    "contactNo": "1234567",
+                    "countryCode": "+971",
+                    "type": "Exporter"
+                }
+            ],
+            "attributes": [],
+            "certificateType": "health",
+            "loadingPort": "Navegantes",
+            "invoiceNumber": "IN3007",
+            "transportation": "CMA CGM RHONE",
+            "billingNumber": "3007EB22",
+            "billingDate": "2025-07-30",
+            "shipmentDetails": {
+                "producerName": "JBS AVES LTDA",
+                "vesselName": "MSC AJACCIO",
+                "containerNumber": "TRIU8945182",
+                "shippingDate": "{{shippingDate}}"
+            }
+        },
+        {
+            "issuingEntity": "ARAB-BRAZILIAN CHAMBER OF COMMERCE",
+            "certificateNo": "{{originCertificateNo}}",
+            "certificateDate": "{{certificateDate}}",
+            "destinationPort": "Ajman Port",
+            "fileId": "{{originCertFileId}}",
+            "products": [
+                {
+                    "productQuantity": 2000,
+                    "productQuantityMeasure": "Boxes",
+                    "productWeight": 20800.00,
+                    "productGrossWeight": 20866.00,
+                    "productWeightMeasure": "Kg",
+                    "productDesc": "Frozen chicken griller 1000 grams",
+                    "productName": "Frozen chicken griller",
+                    "hscode": "0207.1200"
+                },
+                {
+                    "productQuantity": 420,
+                    "productQuantityMeasure": "Boxes",
+                    "productWeight": 3360.00,
+                    "productGrossWeight": 3579.340,
+                    "productWeightMeasure": "Kg",
+                    "productDesc": "Frozen chicken griller 800 grams",
+                    "productName": "Frozen chicken griller",
+                    "hscode": "0207.1200"
+                }
+            ],
+            "contacts": [
+                {
+                    "name": "EMKE GENERAL TRADING LLC",
+                    "address": "P O BOX 60188 DUBAI UNITED URAB EMIRATES. U.A.E",
+                    "type": "Importer"
+                },
+                {
+                    "name": "JBS AVES LTDA",
+                    "address": "AV BRAZIL 002000 DIST. NV A CENTRO CAARAPO MS BRAZIL CEP 79940000",
+                    "type": "Exporter"
+                },
+                {
+                    "name": "EMKE GENERAL TRADING LLC",
+                    "address": "P O BOX 60188 DUBAI UNITED URAB EMIRATES. U.A.E",
+                    "type": "Consignee"
+                }
+            ],
+            "certificateType": "Certificate of Origin",
+            "loadingPort": "Navegantes",
+            "transportation": "MSC AJJACIO",
+            "transportMethod": "SEA",
+            "countryOfOrigin": "BRAZIL"
+        },
+        {
+            "issuingEntity": "SEARA INTERNATIONAL LTD",
+            "certificateNo": "{{invoiceCertificateNo}}",
+            "certificateDate": "{{certificateDate}}",
+            "destinationPort": "Ajman Port",
+            "fileId": "{{commericalInvoiceFileId}}",
+            "products": [
+                {
+                    "productWeight": 336000,
+                    "productWeightMeasure": "Tons",
+                    "productDesc": "Frozen chicken griller 800 grams",
+                    "productName": "Frozen chicken griller",
+                    "brand": "FRANGOSUL",
+                    "hscode": "0207.1200",
+                    "productCode": "GR-619",
+                    "unit": 1475.00,
+                    "unitMeasure": "Ton",
+                    "amount": 4956.00,
+                    "currency": "USD"
+                },
+                {
+                    "productQuantity": 2000000,
+                    "productQuantityMeasure": "Boxes",
+                    "productDesc": "Frozen chicken griller 1000 grams",
+                    "productName": "Frozen chicken griller",
+                    "brand": "FRANGOSUL",
+                    "hscode": "0207.1200",
+                    "productCode": "GR-621",
+                    "unit": 1475.00,
+                    "unitMeasure": "Ton",
+                    "amount": 29500.00,
+                    "currency": "USD"
+                }
+            ],
+            "contacts": [
+                {
+                    "name": "EMKE GENERAL TRADING LLC",
+                    "address": "P O BOX 60188 DUBAI UNITED URAB EMIRATES. U.A.E",
+                    "type": "Importer"
+                },
+                {
+                    "name": "EMKE GENERAL TRADING LLC",
+                    "address": "P O BOX 60188 DUBAI UNITED URAB EMIRATES. U.A.E",
+                    "type": "Consignee",
+                    "email": "EGTDUBAI.TEST@EMIRATES.NET",
+                    "contactNo": "426700765",
+                    "countryCode": "+971"
+                },
+                {
+                    "name": "EMKE GENERAL TRADING LLC",
+                    "address": "P O BOX 60188 DUBAI UNITED URAB EMIRATES. U.A.E",
+                    "type": "Notify",
+                    "email": "EGTDUBAI.TEST@EMIRATES.NET",
+                    "contactNo": "426700775",
+                    "countryCode": "+971"
+                }
+            ],
+            "certificateType": "Commercial Invoice",
+            "loadingPort": "Navegantes",
+            "invoiceNumber": "364432",
+            "invoiceDate": "2017-07-10",
+            "transportation": "MSC AJJACIO",
+            "shipmentDetails": {
+                "containerNumber": "TRIU8945182",
+                "shippingDate": "{{shippingDate}}"
+            }
+        }
+    ]
+}

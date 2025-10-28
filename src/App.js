@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { Download, Play, CheckCircle, XCircle, Clock, AlertTriangle, FileText, Calendar, User } from 'lucide-react';
+import createAllCertsPayload from './testData/createAllCerts.json';
+import invalidDestionPortPayload from './testData/invalidDestinationPort.json';
+import invalidLoadingPortPayload from './testData/invalidLoadingPort.json';
+
 
 const EchoHalalTestCases = () => {
   const [activeTab, setActiveTab] = useState('authorization');
@@ -1570,9 +1574,9 @@ const EchoHalalTestCases = () => {
 
     createCertificates: [
       {
-        id: 'TC-EH-16',
-        scenario: 'Create all certificates with valid format',
-        endpoint: 'BaseUrl/be-smart-cert/aum-smart-cert/1.0/public/v1/external/create-certificates',
+        id: 'TC-EH-46',
+        scenario: 'Create all Certificates with valid format | Halal, Health, Origin, Invoice.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/certificate-details',
         method: 'POST',
         priority: 'Critical',
         type: 'Functional',
@@ -1588,35 +1592,78 @@ const EchoHalalTestCases = () => {
           'Validate certificate data integrity'
         ],
         testData: {
-          halalCert: {
-            importerName: 'ABC Trading Co',
-            exporterName: 'XYZ Exports Ltd',
-            productDescription: 'Halal Chicken',
-            quantity: '1000 KG',
-            destination: 'Dubai, UAE'
+          body: createAllCertsPayload,
+          headers: {
+          authorization: 'Bearer {token}',
+          contentType: 'application/json'
           },
-          healthCert: {
-            importerName: 'ABC Trading Co',
-            exporterName: 'XYZ Exports Ltd',
-            productDescription: 'Fresh Vegetables',
-            quantity: '500 KG',
-            healthStandards: 'ISO 22000'
-          },
-          originCert: {
-            country: 'Pakistan',
-            manufacturer: 'XYZ Exports Ltd',
-            productCode: 'PRD-001'
-          },
-          invoiceCert: {
-            invoiceNumber: 'INV-2024-001',
-            totalAmount: '50000 USD',
-            currency: 'USD'
-          },
-          authToken: 'Bearer {token}',
-          contentType: 'application/json',
-          environment: 'QA'
         },
-        expectedResult: 'Status Code: 200 or 201\nAll certificates created successfully\nResponse contains IDs for all certificates\nEach certificate can be retrieved individually',
+        
+        expectedResult: 'Status Code: 200\nGenerate Certificate Request\nId": 114605\nStatus: SENT',
+        postConditions: 'All certificates are stored and accessible',
+        estimatedTime: '15 mins',
+        tags: ['Smoke', 'Regression', 'API', 'E2E']
+      },
+
+      {
+        id: 'TC-EH-47',
+        scenario: 'Create all Certificates with invalid Destination Port | Halal, Health, Origin, Invoice.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/certificate-details',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nAll required certificate data available',
+        testSteps: [
+          'Obtain authorization token',
+          'Prepare valid data for all certificate types (Halal, Health, Origin, Invoice)',
+          'Send POST request with complete certificate data',
+          'Verify response status code',
+          'Verify all certificates are created',
+          'Verify response contains all certificate IDs',
+          'Validate certificate data integrity'
+        ],
+        testData: {
+          body: invalidDestionPortPayload,
+          headers: {
+          authorization: 'Bearer {token}',
+          contentType: 'application/json'
+          },
+        },
+        
+        expectedResult: 'Status Code: 400\nDestination ports should be same for the given certificates :[Ajman, Ajman, Ajman Port, Ajman Port]',
+        postConditions: 'All certificates are stored and accessible',
+        estimatedTime: '15 mins',
+        tags: ['Smoke', 'Regression', 'API', 'E2E']
+      },
+
+      {
+        id: 'TC-EH-48',
+        scenario: 'Create all Certificates with invalid Loading Port | Halal, Health, Origin, Invoice.',
+        endpoint: 'BaseUrl/be-smart-cert/core-smart-cert/1.0/api/v1/facilitator/certificate-details',
+        method: 'POST',
+        priority: 'Critical',
+        type: 'Negative',
+        automationStatus: 'Automated',
+        preConditions: 'User is authorized\nAll required certificate data available',
+        testSteps: [
+          'Obtain authorization token',
+          'Prepare valid data for all certificate types (Halal, Health, Origin, Invoice)',
+          'Send POST request with complete certificate data',
+          'Verify response status code',
+          'Verify all certificates are created',
+          'Verify response contains all certificate IDs',
+          'Validate certificate data integrity'
+        ],
+        testData: {
+          body: invalidLoadingPortPayload,
+          headers: {
+          authorization: 'Bearer {token}',
+          contentType: 'application/json'
+          },
+        },
+        
+        expectedResult: 'Status Code: 400\nInvalid loading port. Please select a valid loading port for the FAMBRAS HALAL Certification Limited authority.',
         postConditions: 'All certificates are stored and accessible',
         estimatedTime: '15 mins',
         tags: ['Smoke', 'Regression', 'API', 'E2E']
