@@ -1,9 +1,42 @@
 import React, { useState } from 'react';
-import { Download, Play, CheckCircle, XCircle, Clock, AlertTriangle, FileText, Calendar, User, Search } from 'lucide-react';
+import { Download, Play, CheckCircle, XCircle, Clock, AlertTriangle, FileText, Calendar, User, Search, BookOpen, ChevronsRight } from 'lucide-react';
 import createAllCertsPayload from './testData/createAllCerts.json';
 import invalidDestionPortPayload from './testData/invalidDestinationPort.json';
 import invalidLoadingPortPayload from './testData/invalidLoadingPort.json';
+import { testStrategy } from './testData/testStrategy';
 
+const TestStrategyViewer = () => (
+    <div className="bg-white rounded-xl shadow p-6 lg:p-8">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
+        <BookOpen className="text-blue-600" />
+        <span>{testStrategy.title}</span>
+      </h1>
+      {testStrategy.sections.map((section, index) => (
+        <div key={index} className="mb-8 pb-4 border-b last:border-b-0">
+          <h2 className="text-xl font-semibold text-gray-700 mb-3">{section.title}</h2>
+          {Array.isArray(section.content) ? (
+            <ul className="space-y-2 text-sm text-gray-600">
+              {section.content.map((item, i) => <li key={i} className="flex items-start"><ChevronsRight className="w-4 h-4 mr-2 mt-1 text-blue-500 flex-shrink-0" /> <span dangerouslySetInnerHTML={{ __html: item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} /></li>)}
+            </ul>
+          ) : (
+            section.content && <p className="text-sm text-gray-600">{section.content}</p>
+          )}
+          {section.subsections && (
+            <div className="mt-4 space-y-4 pl-4">
+              {section.subsections.map((subsection, subIndex) => (
+                <div key={subIndex}>
+                  <h3 className="text-lg font-semibold text-gray-700 mb-2">{subsection.title}</h3>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    {subsection.content.map((item, i) => <li key={i} className="flex items-start"><ChevronsRight className="w-4 h-4 mr-2 mt-1 text-blue-500 flex-shrink-0" /> <span dangerouslySetInnerHTML={{ __html: item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} /></li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
 
 const EchoHalalTestCases = () => {
   const [activeTab, setActiveTab] = useState('authorization');
@@ -18,6 +51,7 @@ const EchoHalalTestCases = () => {
     executionTime: ''
   });
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentView, setCurrentView] = useState('testCases');
 
   const testCases = {
     authorization: [
@@ -1855,21 +1889,44 @@ const EchoHalalTestCases = () => {
           {/* Tabs */}
           <aside className="w-1/5">
             <div className="bg-white rounded-xl shadow p-4">
+              <h2 className="text-sm font-semibold text-gray-600 mb-3">View</h2>
+              <div className="space-y-1">
+                <button
+                    onClick={() => setCurrentView('testCases')}
+                    className={`w-full flex justify-between items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors text-left ${
+                        currentView === 'testCases' ? 'bg-blue-600 text-white shadow' : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                >
+                    <span>Test Cases</span>
+                </button>
+                <button
+                    onClick={() => setCurrentView('testStrategy')}
+                    className={`w-full flex justify-between items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors text-left ${
+                        currentView === 'testStrategy' ? 'bg-blue-600 text-white shadow' : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                >
+                    <span>Test Strategy</span>
+                </button>
+              </div>
+              <hr className="my-4" />
               <h2 className="text-sm font-semibold text-gray-600 mb-3">Test Suites</h2>
               <div className="space-y-1">
                 {tabs.map(tab => (
                   <button
                     key={tab.key}
-                    onClick={() => setActiveTab(tab.key)}
+                    onClick={() => {
+                        setCurrentView('testCases');
+                        setActiveTab(tab.key);
+                    }}
                     className={`w-full flex justify-between items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors text-left ${
-                      activeTab === tab.key
+                    activeTab === tab.key && currentView === 'testCases'
                         ? 'bg-blue-600 text-white shadow'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >
                     <span>{tab.label}</span>
                     <span className={`px-2 py-0.5 text-xs rounded-full ${
-                      activeTab === tab.key ? 'bg-white bg-opacity-20' : 'bg-gray-200'
+                    activeTab === tab.key && currentView === 'testCases' ? 'bg-white bg-opacity-20' : 'bg-gray-200'
                     }`}>
                       {tab.count}
                     </span>
@@ -1881,184 +1938,190 @@ const EchoHalalTestCases = () => {
 
           {/* Main Content */}
           <div className="w-4/5">
-            <div className="bg-white rounded-xl shadow overflow-hidden">
-              {/* Test Cases Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Scenario</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Priority</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Type</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {filteredTestCases.map((tc, index) => {
-                      const execution = testExecutions[tc.id];
-                      return (
-                        <tr key={tc.id} className={`hover:bg-blue-50 cursor-pointer ${selectedTestCase === tc.id ? 'bg-blue-100' : ''}`}
-                          onClick={() => setSelectedTestCase(tc.id)}>
-                          <td className="px-4 py-3 text-sm font-medium text-blue-600 whitespace-nowrap">{tc.id}</td>
-                          <td className="px-4 py-3 text-sm text-gray-800">{tc.scenario}</td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${
-                              tc.priority === 'Critical' ? 'bg-red-100 text-red-800' :
-                              tc.priority === 'High' ? 'bg-orange-100 text-orange-800' :
-                              'bg-yellow-100 text-yellow-800'
-                            }`}>
-                              {tc.priority}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${
-                              tc.type === 'Functional' ? 'bg-green-100 text-green-800' :
-                              'bg-purple-100 text-purple-800'
-                            }`}>
-                              {tc.type}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            {execution ? (
-                              <div className="flex items-center space-x-2">
-                                {getStatusIcon(execution.status)}
-                                <span className="text-xs font-medium text-gray-700">
-                                  {execution.status}
-                                </span>
-                              </div>
-                            ) : (
-                              <span className="text-xs text-gray-500">Not Executed</span>
-                            )}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleExecuteTest(tc.id);
-                              }}
-                              className="flex items-center space-x-1 px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-full text-xs transition-colors shadow-sm"
-                            >
-                              <Play size={14} />
-                              <span>Execute</span>
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Test Case Details */}
-            {selectedTestCase && selectedTC && (
-              <div className="bg-white rounded-xl shadow-lg p-6 mt-6 border-t-4 border-blue-600">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-800 flex items-center space-x-2">
-                    <FileText className="text-blue-600" size={22} />
-                    <span>Test Case Details - {selectedTestCase}</span>
-                  </h3>
-                  <div className="flex items-center space-x-2">
-                    {selectedTC.tags.map(tag => (
-                      <span key={tag} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+          {currentView === 'testCases' ? (
+              <>
+                <div className="bg-white rounded-xl shadow overflow-hidden">
+                    {/* Test Cases Table */}
+                    <div className="overflow-x-auto">
+                        <table className="w-full">
+                        <thead className="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Scenario</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Priority</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Type</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                            {filteredTestCases.map((tc, index) => {
+                            const execution = testExecutions[tc.id];
+                            return (
+                                <tr key={tc.id} className={`hover:bg-blue-50 cursor-pointer ${selectedTestCase === tc.id ? 'bg-blue-100' : ''}`}
+                                onClick={() => setSelectedTestCase(tc.id)}>
+                                <td className="px-4 py-3 text-sm font-medium text-blue-600 whitespace-nowrap">{tc.id}</td>
+                                <td className="px-4 py-3 text-sm text-gray-800">{tc.scenario}</td>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${
+                                    tc.priority === 'Critical' ? 'bg-red-100 text-red-800' :
+                                    tc.priority === 'High' ? 'bg-orange-100 text-orange-800' :
+                                    'bg-yellow-100 text-yellow-800'
+                                    }`}>
+                                    {tc.priority}
+                                    </span>
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${
+                                    tc.type === 'Functional' ? 'bg-green-100 text-green-800' :
+                                    'bg-purple-100 text-purple-800'
+                                    }`}>
+                                    {tc.type}
+                                    </span>
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    {execution ? (
+                                    <div className="flex items-center space-x-2">
+                                        {getStatusIcon(execution.status)}
+                                        <span className="text-xs font-medium text-gray-700">
+                                        {execution.status}
+                                        </span>
+                                    </div>
+                                    ) : (
+                                    <span className="text-xs text-gray-500">Not Executed</span>
+                                    )}
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleExecuteTest(tc.id);
+                                    }}
+                                    className="flex items-center space-x-1 px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded-full text-xs transition-colors shadow-sm"
+                                    >
+                                    <Play size={14} />
+                                    <span>Execute</span>
+                                    </button>
+                                </td>
+                                </tr>
+                            );
+                            })}
+                        </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Left Column */}
-                  <div className="space-y-5">
-                    <div>
-                      <label className="text-xs font-semibold text-gray-500 uppercase">Scenario</label>
-                      <p className="text-sm text-gray-800 mt-1">{selectedTC.scenario}</p>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-xs font-semibold text-gray-500 uppercase">Priority</label>
-                        <p className="text-sm text-gray-800 mt-1">{selectedTC.priority}</p>
-                      </div>
-                      <div>
-                        <label className="text-xs font-semibold text-gray-500 uppercase">Type</label>
-                        <p className="text-sm text-gray-800 mt-1">{selectedTC.type}</p>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-semibold text-gray-500 uppercase">API Endpoint</label>
-                      <p className="text-xs text-gray-800 mt-1 font-mono bg-gray-100 p-2 rounded-md">{selectedTC.endpoint}</p>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-semibold text-gray-500 uppercase">Pre-Conditions</label>
-                      <p className="text-sm text-gray-800 mt-1 whitespace-pre-line">{selectedTC.preConditions}</p>
-                    </div>
-                  </div>
-
-                  {/* Right Column */}
-                  <div className="space-y-5">
-                    <div>
-                      <label className="text-xs font-semibold text-gray-500 uppercase">Test Steps</label>
-                      <ol className="mt-2 space-y-1">
-                        {selectedTC.testSteps.map((step, idx) => (
-                          <li key={idx} className="text-sm text-gray-800 flex space-x-2">
-                            <span className="font-bold text-blue-600">{idx + 1}.</span>
-                            <span>{step}</span>
-                          </li>
-                        ))}
-                      </ol>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-semibold text-gray-500 uppercase">Expected Result</label>
-                      <p className="text-sm text-gray-800 mt-1 whitespace-pre-line bg-green-50 p-3 rounded-md border border-green-200">
-                        {selectedTC.expectedResult}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 border-t pt-5">
-                  <label className="text-xs font-semibold text-gray-500 uppercase">Test Data</label>
-                  <div className="mt-2 bg-gray-900 text-white p-4 rounded-md text-xs font-mono">
-                    <pre className="whitespace-pre-wrap">{JSON.stringify(selectedTC.testData, null, 2)}</pre>
-                  </div>
-                </div>
-
-                {/* Execution History */}
-                {testExecutions[selectedTestCase] && (
-                  <div className="mt-6 border-t pt-5">
-                    <label className="text-xs font-semibold text-gray-500 uppercase">Last Execution</label>
-                    <div className="mt-2 bg-gray-50 p-4 rounded-md space-y-3">
-                      <div className="flex items-center space-x-2">
-                        <label className="text-sm font-semibold w-24">Status:</label>
-                        <span className={`px-2.5 py-1 text-xs font-semibold rounded-full border ${getStatusColor(testExecutions[selectedTestCase].status)}`}>
-                          {testExecutions[selectedTestCase].status}
+                {/* Test Case Details */}
+                {selectedTestCase && selectedTC && (
+                <div className="bg-white rounded-xl shadow-lg p-6 mt-6 border-t-4 border-blue-600">
+                    <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-bold text-gray-800 flex items-center space-x-2">
+                        <FileText className="text-blue-600" size={22} />
+                        <span>Test Case Details - {selectedTestCase}</span>
+                    </h3>
+                    <div className="flex items-center space-x-2">
+                        {selectedTC.tags.map(tag => (
+                        <span key={tag} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                            {tag}
                         </span>
-                      </div>
-                      <div className="flex items-center space-x-2 text-sm">
-                        <User size={16} className="text-gray-500" />
-                        <span className="text-gray-700">{testExecutions[selectedTestCase].executedBy}</span>
-                      </div>
-                      <div className="flex items-center space-x-2 text-sm">
-                        <Calendar size={16} className="text-gray-500" />
-                        <span className="text-gray-700">{testExecutions[selectedTestCase].executionTime}</span>
-                      </div>
-                      {testExecutions[selectedTestCase].comments && (
-                        <div className="mt-2">
-                          <label className="text-sm font-semibold text-gray-600">Comments:</label>
-                          <p className="text-sm text-gray-700 mt-1 p-2 bg-white rounded">{testExecutions[selectedTestCase].comments}</p>
-                        </div>
-                      )}
+                        ))}
                     </div>
-                  </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Left Column */}
+                    <div className="space-y-5">
+                        <div>
+                        <label className="text-xs font-semibold text-gray-500 uppercase">Scenario</label>
+                        <p className="text-sm text-gray-800 mt-1">{selectedTC.scenario}</p>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="text-xs font-semibold text-gray-500 uppercase">Priority</label>
+                            <p className="text-sm text-gray-800 mt-1">{selectedTC.priority}</p>
+                        </div>
+                        <div>
+                            <label className="text-xs font-semibold text-gray-500 uppercase">Type</label>
+                            <p className="text-sm text-gray-800 mt-1">{selectedTC.type}</p>
+                        </div>
+                        </div>
+
+                        <div>
+                        <label className="text-xs font-semibold text-gray-500 uppercase">API Endpoint</label>
+                        <p className="text-xs text-gray-800 mt-1 font-mono bg-gray-100 p-2 rounded-md">{selectedTC.endpoint}</p>
+                        </div>
+
+                        <div>
+                        <label className="text-xs font-semibold text-gray-500 uppercase">Pre-Conditions</label>
+                        <p className="text-sm text-gray-800 mt-1 whitespace-pre-line">{selectedTC.preConditions}</p>
+                        </div>
+                    </div>
+
+                    {/* Right Column */}
+                    <div className="space-y-5">
+                        <div>
+                        <label className="text-xs font-semibold text-gray-500 uppercase">Test Steps</label>
+                        <ol className="mt-2 space-y-1">
+                            {selectedTC.testSteps.map((step, idx) => (
+                            <li key={idx} className="text-sm text-gray-800 flex space-x-2">
+                                <span className="font-bold text-blue-600">{idx + 1}.</span>
+                                <span>{step}</span>
+                            </li>
+                            ))}
+                        </ol>
+                        </div>
+
+                        <div>
+                        <label className="text-xs font-semibold text-gray-500 uppercase">Expected Result</label>
+                        <p className="text-sm text-gray-800 mt-1 whitespace-pre-line bg-green-50 p-3 rounded-md border border-green-200">
+                            {selectedTC.expectedResult}
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div className="mt-6 border-t pt-5">
+                    <label className="text-xs font-semibold text-gray-500 uppercase">Test Data</label>
+                    <div className="mt-2 bg-gray-900 text-white p-4 rounded-md text-xs font-mono">
+                        <pre className="whitespace-pre-wrap">{JSON.stringify(selectedTC.testData, null, 2)}</pre>
+                    </div>
+                    </div>
+
+                    {/* Execution History */}
+                    {testExecutions[selectedTestCase] && (
+                    <div className="mt-6 border-t pt-5">
+                        <label className="text-xs font-semibold text-gray-500 uppercase">Last Execution</label>
+                        <div className="mt-2 bg-gray-50 p-4 rounded-md space-y-3">
+                        <div className="flex items-center space-x-2">
+                            <label className="text-sm font-semibold w-24">Status:</label>
+                            <span className={`px-2.5 py-1 text-xs font-semibold rounded-full border ${getStatusColor(testExecutions[selectedTestCase].status)}`}>
+                            {testExecutions[selectedTestCase].status}
+                            </span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                            <User size={16} className="text-gray-500" />
+                            <span className="text-gray-700">{testExecutions[selectedTestCase].executedBy}</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                            <Calendar size={16} className="text-gray-500" />
+                            <span className="text-gray-700">{testExecutions[selectedTestCase].executionTime}</span>
+                        </div>
+                        {testExecutions[selectedTestCase].comments && (
+                            <div className="mt-2">
+                            <label className="text-sm font-semibold text-gray-600">Comments:</label>
+                            <p className="text-sm text-gray-700 mt-1 p-2 bg-white rounded">{testExecutions[selectedTestCase].comments}</p>
+                            </div>
+                        )}
+                        </div>
+                    </div>
+                    )}
+                </div>
                 )}
-              </div>
-            )}
+              </>
+          ) : (
+              <TestStrategyViewer />
+          )}
           </div>
         </div>
       </main>
